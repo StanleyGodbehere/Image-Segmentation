@@ -4,3 +4,5 @@ env/
 venv/
 .vscode/
 BraTS2020_TrainingData/
+test/
+temp.py

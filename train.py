@@ -7,7 +7,7 @@ import torch.optim as optimisers
 from torch.utils.data import Dataset, DataLoader, random_split
 from model import UNet
 
-#DATA_PATH = "./test"
+#DATA_PATH = "./exampleData"
 DATA_PATH = "./BraTS2020_TrainingData/BraTS2020_training_data/content/data"
 
 EPOCHS = 25

@@ -12,7 +12,7 @@ DATA_PATH = "./BraTS2020_TrainingData/BraTS2020_training_data/content/data"
 
 EPOCHS = 25
 LEARNING_RATE = 0.001
-BATCH_SIZE = 10
+BATCH_SIZE = 6
 
 class Data(Dataset):
     def __init__(self, dataPath):
@@ -75,15 +75,32 @@ if __name__ == "__main__":
     testingDataLoader = DataLoader(testingData, batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
 
     model = UNet([4,16,32,64,128,3])
-    optimiser = optimisers.SGD(model.parameters(), lr=LEARNING_RATE, momentum=0.9)
+    optimiser = optimisers.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=0.00001)
+    lrScheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimiser, patience=6, factor=0.5, min_lr=0.000001)
+    lowestCost = float("inf")
+
+    trainingEvolution = []
+    testingEvolution = []
+
+    print("training model")
 
     for i in range(EPOCHS):
         trainingCost = trainEpoch(model, optimiser, trainingDataLoader)
         testingCost = test(model, testingDataLoader)
-        if i%5 == 0:
-            print("Epoch",i,":\ntraining cost =",trainingCost,"\ntesting cost =",testingCost)
+        lrScheduler.step(testingCost)
+
+        print("Epoch",i,":\ntraining cost =",trainingCost,"\ntesting cost =",testingCost)
+        
+        if testingCost < lowestCost:
+            lowestCost = testingCost
+            torch.save(model.state_dict(), "bestModel.pth")
+
+        trainingEvolution.append(trainingCost)
+        testingEvolution.append(testingCost)
 
     print("\nFinal training cost =",trainingCost,"\nFinal testing cost =",testingCost)
     
     torch.save(model.state_dict(), "model.pth")
     print("model saved to model.pth")
+
+    print("best model saved to bestModel.pth, testing cost:",lowestCost)

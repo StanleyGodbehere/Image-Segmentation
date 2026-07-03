@@ -63,6 +63,7 @@ class UNet(nn.Module):
 
         self.upBlocks = nn.ModuleList()
         upDepths = layerDepths[1:][::-1]
+        
         for i in range(len(upDepths[:-1])):
             self.upBlocks.append(UpBlock(upDepths[i], upDepths[i+1]))
 

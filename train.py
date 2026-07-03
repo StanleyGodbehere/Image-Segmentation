@@ -1,7 +1,6 @@
 import glob
 import h5py
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
 import torch.optim as optimisers
 from torch.utils.data import Dataset, DataLoader, random_split
@@ -55,6 +54,7 @@ def trainEpoch(model, optimiser, dataLoader):
         cost.backward()
         optimiser.step()
         totalCost += cost.item() * inputTensor.size(0)
+
     return totalCost / len(dataLoader.dataset)
 
 @torch.no_grad()
@@ -64,6 +64,7 @@ def test(model, dataLoader):
     for inputTensor, targets in dataLoader:
         cost = costFunction(model(inputTensor), targets)
         totalCost += cost.item() * inputTensor.size(0)
+
     return totalCost / len(dataLoader.dataset)
 
 if __name__ == "__main__":
@@ -82,7 +83,7 @@ if __name__ == "__main__":
     trainingEvolution = []
     testingEvolution = []
 
-    print("training model")
+    print("training model...")
 
     for i in range(EPOCHS):
         trainingCost = trainEpoch(model, optimiser, trainingDataLoader)

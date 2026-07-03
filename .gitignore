@@ -6,3 +6,6 @@ venv/
 BraTS2020_TrainingData/
 test/
 temp.py
+__pycache__/
+*.py[codz]
+*$py.class

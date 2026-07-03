@@ -9,3 +9,5 @@ temp.py
 __pycache__/
 *.py[codz]
 *$py.class
+model.pth
+bestModel.pth

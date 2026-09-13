@@ -6,3 +6,5 @@ Deployed for brain tumour detection using the BraTS2020 dataset (available here:
 ![alt text](image1.png)
 
 ![alt text](image2.png)
+
+Project also includes a Jupyter notebook designed for Google colab
